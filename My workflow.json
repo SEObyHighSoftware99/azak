@@ -1,0 +1,157 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.prompt}}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "c14a6b4a-c65e-47a2-82d5-e2bed1dedbb2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        0
+      ],
+      "id": "cb516cfe-1242-4183-99e0-24b034a433e7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c4f64f8-75ea-4c1b-9317-dcecbdcaa8dc",
+              "name": "prompt",
+              "value": "Act as a Senior SEO Content Writer, SEO Strategist, and Research Specialist.  My Goal: Create a premium, original, SEO-optimized article that can rank on Google.  Keyword: [how to run ecomerce business]  Requirements  • Write a completely original article. • Do NOT copy or rewrite content from other websites. • Research the topic using reliable and up-to-date information and write the article in your own words. • Follow Google's Helpful Content and EEAT principles. • Content length: 1,500–2,500 words. • Use professional US English. • Make the content engaging, actionable, and easy to read.  The article must include:  1. A compelling introduction using the focus keyword naturally.  2. A complete step-by-step guide.  3. Benefits and practical use cases.  4. Common mistakes and how to avoid them.  5. Frequently Asked Questions (FAQs).  6. Latest trends, updates, and best practices relevant to the topic.  7. A conclusion with actionable takeaways.  If the keyword is relevant to my SEO business, naturally explain:  • How our service solves the problem. • Why clients should choose us. • Benefits of working with us. • Our free SEO audit. • Our transparent process. • Long-term SEO strategy. • Call to Action.  SEO Requirements  Generate:  • Focus Keyphrase • SEO Title (must begin with the focus keyphrase) • URL Slug • Meta Description (maximum 140 characters) • H1 Title • H2/H3 headings • Image Alt Text • Image Title • Internal Link Suggestions • External Authority Suggestions • FAQ Schema (JSON-LD) • Article Schema (JSON-LD)  SEO Rules  ✓ Focus keyword in: - SEO Title - URL Slug - Meta Description - Introduction - First paragraph - At least one H2 - Conclusion  ✓ Maintain natural keyword density.  ✓ Avoid keyword stuffing.  ✓ Write for humans first, then SEO.  After the article is complete:  Create ONE premium featured image.  Image Size: 1000 × 680 px  Image Style: Modern Professional Clean High Quality Minimal  The image should include: • Main headline • Relevant illustrations/icons • Premium design • No spelling mistakes • No watermark • No stock-photo appearance  Finally generate:  1. SEO Title 2. Focus Keyphrase 3. URL Slug 4. Meta Description (≤140 characters) 5. Complete Article 6. FAQs 7. FAQ Schema 8. Article Schema 9. AI Image Prompt (1000×680) 10. Image Alt Text 11. Image Title  But content write html code",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        0
+      ],
+      "id": "cc7a15c7-8666-44f2-8283-42f66511af01",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        240
+      ],
+      "id": "e63cd384-f161-441f-93a3-840f48774f58",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xbfr3kVF3ieCWhxn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "html",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        0
+      ],
+      "id": "b228882c-68c9-41c6-b256-8e5a00428251",
+      "name": "Convert to File"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3d94ffc8-a06f-4a72-a789-c16c1518f854",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ab7a37be9fc93b012cd1caba1219731abbf16fab8d140ddf17a72b4ca5fe1456"
+  },
+  "nodeGroups": [],
+  "id": "mbKLKuQfzKKYBINz",
+  "tags": []
+}
